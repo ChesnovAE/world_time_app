@@ -13,8 +13,7 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
 
     // Принимает Мапу данных из load_screen
-    data = ModalRoute.of(context).settings.arguments;
-    print(data);
+    data = data.isNotEmpty ? data : ModalRoute.of(context).settings.arguments;
 
     // Set Back Ground image
     String bgImage = data['isDayTime'] ? 'day.jpg' : 'night.jpeg';
@@ -38,13 +37,21 @@ class _HomeState extends State<Home> {
               children: <Widget>[
                 // Делаем кнопочку для выброа местоположения
                 FlatButton.icon(
-                  onPressed: () {
+                  onPressed: () async {
                     /**
                      * Это функция для того, чтобы
                      * Вытолкнуть какой-нибудь экран вперед
                      * pushed choosen screen on top
+                     * А еще тут мы запуускаем большую асинхронную таску по выбору локации
+                     * Мы ждем, когда выберем локацию и если выбрали что-то, то в results
+                     * запишется результат
+                     * Если нет, то запишется NULL
                      */  
-                    Navigator.pushNamed(context, '/location');
+                    dynamic results = await Navigator.pushNamed(context, '/location');
+                    print(!(results is Null));
+                    setState(() {
+                      data = !(results is Null) ? results : data;
+                    });
                   },
                   icon: Icon(
                     Icons.edit_location,

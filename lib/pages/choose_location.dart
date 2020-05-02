@@ -23,6 +23,24 @@ class _ChooseLocationState extends State<ChooseLocation> {
       WorldTime(url: 'Europe/Moscow', location: 'Moscow', flag: 'russia.jpg')
     ];
 
+    void updateTime(index) async {
+      WorldTime wt_instance = locations[index];
+      await wt_instance.getTime();
+      // Navigate to home screen
+      /**
+       * При переходе на экран выбора локации он кладется сверху, а home лежит внизу
+       * Поэтому нам надо всего лишь сделать pop, чтобы убрать этот экран и
+       * пробросить данные в home
+       * Это же делает стрелочка в AppBar
+       */
+      Navigator.pop(context, {
+        'time': wt_instance.time,
+        'location': wt_instance.location,
+        'flag': wt_instance.flag,
+        'isDayTime': wt_instance.isDayTime,
+      });
+    }
+
     return Scaffold(
       backgroundColor: Colors.grey[200],
       /**
@@ -45,7 +63,7 @@ class _ChooseLocationState extends State<ChooseLocation> {
             child: Card(
               child: ListTile(
                 onTap: () {
-                  print(locations[index].location);
+                  updateTime(index);
                 },
                 title: Text(locations[index].location),
                 leading: CircleAvatar(
