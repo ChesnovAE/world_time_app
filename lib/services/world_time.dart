@@ -18,20 +18,26 @@ class WorldTime {
   // async -- в данной функции есть асинхронный код
   // Future используем для того, чтобы при вызове могли использовать await
   Future<void> getTime() async {
-    // Make a request
-    Response response = await get('http://worldtimeapi.org/api/timezone/${url}');
-    Map data = jsonDecode(response.body);
+    try {
+      // Make a request
+      Response response = await get('http://worldtimeapi.org/api/timezone/${url}');
+      Map data = jsonDecode(response.body);
 
-    // Get properties from data
-    String datetime = data['datetime'];
-    String offset = data['utc_offset'].substring(1, 3);
+      // Get properties from data
+      String datetime = data['datetime'];
+      String offset = data['utc_offset'].substring(1, 3);
 
-    // Create DateTime object
-    DateTime now = DateTime.parse(datetime);
-    now = now.add(Duration(hours: int.parse(offset)));
+      // Create DateTime object
+      DateTime now = DateTime.parse(datetime);
+      now = now.add(Duration(hours: int.parse(offset)));
 
-    // Set the time property
-    time = now.toString();
+      // Set the time property
+      time = now.toString();
+    }
+    catch (e) {
+      print('Caught error: $e');
+      time = 'could not get timedata';
+    }
   }
 
 }
