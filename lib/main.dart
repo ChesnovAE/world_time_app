@@ -8,7 +8,7 @@ void main() => runApp(MaterialApp(
      * С помощью этого мы можем задать, что из routes
      * будет загружаться первым, когда мы открываем приложение
      */
-    initialRoute: '/home',
+    initialRoute: '/',
     // Штука для передвижения по экранам
     routes: {
       // Немного про context
