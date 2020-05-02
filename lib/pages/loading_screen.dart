@@ -8,6 +8,8 @@ class Loading extends StatefulWidget {
 
 class _LoadingState extends State<Loading> {
 
+  String time = 'loading';
+
   void setupWorldTime() async {
     WorldTime wt_instance = WorldTime(
       location: 'Moscow',
@@ -15,7 +17,9 @@ class _LoadingState extends State<Loading> {
       url: 'Europe/Moscow'
     );
     await wt_instance.getTime();
-    print(wt_instance.time);
+    setState(() {
+      time = wt_instance.time;
+    });
   }
 
   @override
@@ -28,7 +32,7 @@ class _LoadingState extends State<Loading> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Text('Loading screen')
+      body: SafeArea(child: Text(time))
     );
   }
 }
