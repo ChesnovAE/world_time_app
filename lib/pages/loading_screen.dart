@@ -8,8 +8,6 @@ class Loading extends StatefulWidget {
 
 class _LoadingState extends State<Loading> {
 
-  String time = 'loading';
-
   void setupWorldTime() async {
     WorldTime wt_instance = WorldTime(
       location: 'Moscow',
@@ -17,8 +15,12 @@ class _LoadingState extends State<Loading> {
       url: 'Europe/Moscow'
     );
     await wt_instance.getTime();
-    setState(() {
-      time = wt_instance.time;
+    // Убирает текущий экран со стека и кладет туда '/home'
+    // А еще пробрасываем необходимые данные в другой экран
+    Navigator.pushReplacementNamed(context, '/home', arguments: {
+      'time': wt_instance.time,
+      'location': wt_instance.location,
+      'flag': wt_instance.flag
     });
   }
 
@@ -32,7 +34,7 @@ class _LoadingState extends State<Loading> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(child: Text(time))
+      body: SafeArea(child: Text('Loading'))
     );
   }
 }
