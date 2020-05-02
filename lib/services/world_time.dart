@@ -8,6 +8,7 @@ class WorldTime {
   String time;
   String flag; // URL for image
   String url; // Country/City
+  bool isDayTime; // true or false if day time or not
 
   WorldTime ({
     this.location,
@@ -31,6 +32,7 @@ class WorldTime {
       DateTime now = DateTime.parse(datetime);
       now = now.add(Duration(hours: int.parse(offset)));
 
+      isDayTime = (now.hour > 6) && (now.hour < 20) ? true : false;
       // Set the time property
       time = DateFormat.jm().format(now);
     }
